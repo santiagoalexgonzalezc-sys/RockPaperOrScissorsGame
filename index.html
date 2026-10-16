@@ -1,5 +1,5 @@
 <!DOCTYPE html> 
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8" />
         <title>RSP</title>
@@ -10,7 +10,7 @@
         <link rel="manifest" href="./Favicon/site.webmanifest">
     </head>
 
-    <body style="background-color:beige">
+    <body>
 
         <section id="battle">
             <h1 id="titleBattle">Rock, Paper Or Scissors</h1>
@@ -18,14 +18,27 @@
                 <button id="startBattleButton">Start The Battle</button>
             </div>
 
+            <div id="battleChat" hidden>
+                <p id="chatInstructions">First to 3 wins. Send 1 for rock, 2 for paper, or 3 for scissors.</p>
+                <div id="chatMessages" role="log" aria-live="polite" aria-relevant="additions"></div>
+                <form id="chatForm">
+                    <label for="playerMessage">Your choice (1, 2, or 3)</label>
+                    <div class="chatInputRow">
+                        <input id="playerMessage" name="choice" type="text" inputmode="numeric" maxlength="1" autocomplete="off" required>
+                        <button id="sendMessage" type="submit">Send</button>
+                    </div>
+                    <p id="inputError" role="alert"></p>
+                </form>
+            </div>
         </section>
 
-        <section id="afterBattleMessage">
+        <section id="afterBattleMessage" hidden>
 
             <h1 id="titleAfterBattleMessage">Rock, Paper Or Scissors</h1>
-            <h2 id="subtitle">Did You Won Or Lost?<h2>
+            <h2 id="subtitle">Did You Win Or Lose?</h2>
             <h3 id="glazingPc">The Pc Is Very Good.</h3>
-            <img id="rockPaperScissorsImage" src="https://img.freepik.com/vector-premium/piedra-papel-tijeras-mano-juego-icono-vector-ilustracion_602177-67.jpg"/>
+            <p id="finalScore"></p>
+            <img id="rockPaperScissorsImage" src="https://img.freepik.com/vector-premium/piedra-papel-tijeras-mano-juego-icono-vector-ilustracion_602177-67.jpg" alt="Rock, paper, and scissors">
 
             <button id="restart">Restart</button>
 
@@ -35,4 +48,3 @@
     <script src="./js/script.js"></script>
 
 </html>
-

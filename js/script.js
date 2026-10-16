@@ -1,89 +1,103 @@
 const battle = document.getElementById("battle")
+const goToBattle = document.getElementById("goToBattle")
 const startBattleButton = document.getElementById("startBattleButton")
+const battleChat = document.getElementById("battleChat")
+const chatMessages = document.getElementById("chatMessages")
+const chatForm = document.getElementById("chatForm")
+const playerMessage = document.getElementById("playerMessage")
+const inputError = document.getElementById("inputError")
 const afterBattleMessage = document.getElementById("afterBattleMessage")
+const subtitle = document.getElementById("subtitle")
+const finalScore = document.getElementById("finalScore")
 const restartButton = document.getElementById("restart")
-let jugador = 0
-let pc = 0
-let triunfos = 0
-let derrotas = 0
 
-function startGame() {
-    battle.style.display = "block"
-    afterBattleMessage.style.display = "none"
+const choices = {
+    1: "Rock",
+    2: "Paper",
+    3: "Scissors"
 }
 
-function aleatorio(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)+ min)
+let wins = 0
+let losses = 0
+
+function addMessage(message, className) {
+    const bubble = document.createElement("p")
+    bubble.classList.add("chatMessage", className)
+    bubble.textContent = message
+    chatMessages.appendChild(bubble)
+    chatMessages.scrollTop = chatMessages.scrollHeight
 }
-function eleccion(jugada) {
-    let resultado = ""
-    if(jugada == 1) {
-        resultado = "Piedra🗿🪨🗿"
-    } else if(jugada == 2) {
-        resultado = "Papel📃📃📃"
-    } else if(jugada == 3){
-        resultado = "Tijeras✂️✂️✂️"
+
+function showBattle() {
+    goToBattle.hidden = true
+    battleChat.hidden = false
+    playerMessage.focus()
+}
+
+function finishBattle() {
+    const playerWon = wins === 3
+    battle.hidden = true
+    afterBattleMessage.hidden = false
+    subtitle.textContent = playerWon ? "You won the battle!" : "The computer won the battle!"
+    finalScore.textContent = `You won ${wins} round${wins === 1 ? "" : "s"} and lost ${losses} round${losses === 1 ? "" : "s"}.`
+}
+
+function playRound(playerChoice) {
+    const computerChoice = Math.floor(Math.random() * 3) + 1
+    const choiceLabel = choices[playerChoice]
+
+    addMessage(`You: ${playerChoice} — ${choiceLabel}`, "playerMessageBubble")
+    addMessage(`I choose ${computerChoice} — ${choices[computerChoice]}.`, "computerMessageBubble")
+
+    if (playerChoice === computerChoice) {
+        addMessage("It's a tie! No points this round.", "roundResult")
+    } else if (
+        (playerChoice === 1 && computerChoice === 3) ||
+        (playerChoice === 2 && computerChoice === 1) ||
+        (playerChoice === 3 && computerChoice === 2)
+    ) {
+        wins += 1
+        addMessage(`You won this round! Score: ${wins}–${losses}.`, "roundResult")
     } else {
-        resultado = "Nada"
+        losses += 1
+        addMessage(`You lost this round. Score: ${wins}–${losses}.`, "roundResult")
     }
-    return resultado
-}  
 
-function epicBattle() {
-    while (triunfos < 3 && derrotas < 3) {
-        pc = aleatorio(1,3)
-        jugador = prompt("Elige: 1 para piedra, 2 para papel, 3 para tijeras. El Primero a ganar 3 GANA👑👑")
-        alert("Tu eliges: " + eleccion(jugador))
-        alert("Pc elige: " + eleccion(pc)) 
-
-        //COMBATE!!
-        if(pc == jugador) {
-            alert("Empate🫥")
-        } else if(jugador == 1 && pc == 3) {
-            alert("GANASTE👑")
-            triunfos = triunfos + 1
-        } else if(jugador== 2 && pc == 1) {
-            alert("GANASTE👑👑")
-            triunfos = triunfos + 1
-        } else if(jugador == 3 && pc == 2) {
-            alert("GANASTE👑👑👑")
-            triunfos = triunfos + 1
-        } else {
-            alert("PERDISTE 🤷‍♂️🤷‍♂️🤷‍♂️")
-            derrotas = derrotas + 1
-        }
-
-        if(triunfos == 3) {
-            alert("GANASTE CONTRA EL PC👑👑💻")
-            alert("Ganaste " + triunfos + " Veces y Perdiste " + derrotas + " veces.")
-            battle.style.display = "none"
-            afterBattleMessage.style.display = "block"
-        }
-        if(derrotas == 3) {
-            alert("PERDISTE CONTRA EL PC🤷‍♂️🤷‍♂️💻")
-            alert("Ganaste " + triunfos + " Veces y Perdiste " + derrotas + " veces.")
-            battle.style.display = "none"
-            afterBattleMessage.style.display = "block"
-        }
+    if (wins === 3 || losses === 3) {
+        chatForm.hidden = true
+        finishBattle()
+    } else {
+        playerMessage.focus()
     }
 }
 
 function restartGame() {
-    triunfos = 0
-    derrotas = 0
-    startGame()
+    wins = 0
+    losses = 0
+    chatMessages.replaceChildren()
+    inputError.textContent = ""
+    chatForm.hidden = false
+    battle.hidden = false
+    goToBattle.hidden = false
+    battleChat.hidden = true
+    afterBattleMessage.hidden = true
 }
 
-startBattleButton.addEventListener("click", function() {
-    console.log("Botón de batalla presionado");
-    epicBattle();
-});
+startBattleButton.addEventListener("click", showBattle)
 
-restartButton.addEventListener("click", function() {
-    console.log("Botón de reinicio presionado");
-    restartGame();
-});
+chatForm.addEventListener("submit", function(event) {
+    event.preventDefault()
+    const choice = playerMessage.value.trim()
 
+    if (!Object.hasOwn(choices, choice)) {
+        inputError.textContent = "Please send 1, 2, or 3."
+        playerMessage.focus()
+        return
+    }
 
-startGame();
+    inputError.textContent = ""
+    playerMessage.value = ""
+    playRound(Number(choice))
+})
 
+restartButton.addEventListener("click", restartGame)
