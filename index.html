@@ -13,22 +13,46 @@
     <body>
 
         <section id="battle">
+
             <h1 id="titleBattle">Rock, Paper Or Scissors</h1>
+
             <div id="goToBattle">
-                <button id="startBattleButton">Start The Battle</button>
+
+                <p id="battleTagline">Think you can beat the computer?</p>
+
+                <div id="choicesPreview" role="img" aria-label="Rock, paper, and scissors">
+                    <span aria-hidden="true">✊</span>
+                    <span class="choices" aria-hidden="true">Or</span>
+                    <span aria-hidden="true">✋</span>
+                    <span class="choices" aria-hidden="true">Or</span>
+                    <span aria-hidden="true">✌️</span>
+                </div>
+
+                <p id="battleInstructions">First to 3 wins · Enter 1 for rock, 2 for paper, or 3 for scissors.</p>
+                <button id="startBattleButton">Challenge the computer</button>
+
             </div>
 
             <div id="battleChat" hidden>
-                <p id="chatInstructions">First to 3 wins. Send 1 for rock, 2 for paper, or 3 for scissors.</p>
-                <div id="chatMessages" role="log" aria-live="polite" aria-relevant="additions"></div>
-                <form id="chatForm">
-                    <label for="playerMessage">Your choice (1, 2, or 3)</label>
-                    <div class="chatInputRow">
-                        <input id="playerMessage" name="choice" type="text" inputmode="numeric" maxlength="1" autocomplete="off" required>
-                        <button id="sendMessage" type="submit">Send</button>
+                <div id="battleChatLayout">
+                    <figure id="computerOpponent">
+                        <img src="./Images/Computer-character.png" alt="Your computer opponent, a smiling character wearing red glasses">
+                        <figcaption>Your opponent</figcaption>
+                    </figure>
+                    <div id="battleChatContent">
+                        <p id="chatInstructions">First to 3 wins. Send 1 for rock, 2 for paper, or 3 for scissors.</p>
+                        <div id="chatMessages" role="log" aria-live="polite" aria-relevant="additions"></div>
+
+                        <form id="chatForm">
+                            <label for="playerMessage">Your choice (1, 2, or 3)</label>
+                            <div class="chatInputRow">
+                                <input id="playerMessage" name="choice" type="text" inputmode="numeric" maxlength="1" autocomplete="off" required>
+                                <button id="sendMessage" type="submit">Send</button>
+                            </div>
+                            <p id="inputError" role="alert"></p>
+                        </form>
                     </div>
-                    <p id="inputError" role="alert"></p>
-                </form>
+                </div>
             </div>
         </section>
 
